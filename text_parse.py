@@ -29,9 +29,12 @@ import os
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from email.message import EmailMessage
+import smtplib
+
 
 # Set up a working directory
-working_directory = "my_python_project"
+working_directory = "data/"
 
 # Create the directory if it doesn't exist
 if not os.path.exists(working_directory):
@@ -40,7 +43,7 @@ if not os.path.exists(working_directory):
 print(f"Working directory '{working_directory}' is set up.")
 
 # Path to the data.csv file
-data_file_path = os.path.join(working_directory, "data.csv")
+data_file_path = os.path.join(working_directory, "thick.csv")
 
 # Check if the file exists before reading
 if os.path.exists(data_file_path):
@@ -51,6 +54,7 @@ if os.path.exists(data_file_path):
 else:
     print(f"File '{data_file_path}' does not exist.")
 
+#####good to read file######
 
     def cleansing(columns_to_read):
         # Check if the file exists before reading
@@ -146,3 +150,84 @@ if cleansed_data is not None:
 
     # Call the function to plot the heatmap
     plot_heatmap(cleansed_data, x_col="column1", y_col="column2", value_col="column3")
+
+
+#standard deviation analysis
+
+import pandas as pd
+     import numpy as np
+     import matplotlib.pyplot as plt
+
+     # Load data (replace with your actual data loading)
+     data = pd.read_csv('surface_data.csv')
+
+     # Calculate standard deviation of surface heights
+     standard_deviation = data['height'].std()
+
+     print(f"Standard Deviation of surface flatness: {standard_deviation}")
+
+     # Visualize (optional)
+     plt.hist(data['height'], bins=20)
+     plt.xlabel('Surface Height')
+     plt.ylabel('Frequency')
+     plt.title('Surface Height Distribution')
+     plt.show()
+
+#RMSE analysis
+
+     import pandas as pd
+     import numpy as np
+     import matplotlib.pyplot as plt
+
+     # Load data (replace with your actual data loading)
+     data = pd.read_csv('surface_data.csv')
+
+     # Assume 'height' column contains surface heights
+     surface_heights = data['height']
+
+     # Calculate the mean height (as an approximation of a plane)
+     mean_height = np.mean(surface_heights)
+
+     # Calculate the squared differences from the mean
+     squared_differences = (surface_heights - mean_height)**2
+
+     # Calculate the root mean squared error
+     rmse = np.sqrt(np.mean(squared_differences))
+
+     print(f"Root Mean Squared Error (RMSE) of surface flatness: {rmse}")
+
+     # Visualize (optional)
+     plt.scatter(range(len(surface_heights)), surface_heights, label="Surface Height")
+     plt.plot(range(len(surface_heights)), [mean_height] * len(surface_heights), color="red", linestyle='-', label= "Mean Height (Plane)", linewidth=2)
+     plt.xlabel("Data Points")
+     plt.ylabel("Surface Height")
+     plt.title("Surface Height vs. Mean Height")
+     plt.legend()
+     plt.show()
+
+
+     import numpy as np
+
+def calculate_std_dev(data, ddof=0):
+  """Calculates the standard deviation of a dataset.
+
+  Args:
+    data: A list or numpy array of numerical data.
+    ddof: Delta Degrees of Freedom. 0 for population std dev, 1 for sample std dev.
+
+  Returns:
+      The standard deviation of the data.
+  """
+  return np.std(data, ddof=ddof)
+
+def calculate_rmse(predictions, targets):
+    """Calculates the Root Mean Squared Error (RMSE).
+
+    Args:
+        predictions: A list or numpy array of predicted values.
+        targets: A list or numpy array of actual values.
+
+    Returns:
+        The RMSE value.
+    """
+    return np.sqrt(np.mean((np.array(predictions) - np.array(targets))**2))
